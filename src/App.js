@@ -1,30 +1,13 @@
 import './Assets/styles/main.css';
-import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route, Link} from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter, Routes, Route} from 'react-router-dom';
 //pages
-import SignIn from './Pages/auth/SignIn';
 import LandingPage from './Pages/LandingPage';
-
-// Mock user data for demonstration purposes
-const mockUserData = {
-  name: 'John Doe',
-  email: 'john@example.com',
-  picture: 'https://example.com/johndoe.jpg',
-};
+import SignUpPage from './Pages/auth/SignUp';
+import SignInPage from './Pages/auth/SignIn';
+import { ProductsPage } from './Pages/ProductsPage';
 
 function App() {
-  const [user, setUser] = useState(null);
-
-  // Simulate a login with a mock user
-  const login = (userData) => {
-    setUser(userData);
-  }
-
-  // Simulate a logout
-  const logout = () => {
-    setUser(null);
-  }
-
   return (
     <div className="App">
       {/* <nav>
@@ -45,10 +28,10 @@ function App() {
           {/* <Route path="/" exact>
             <h1>Welcome to the Authentication App</h1>
           </Route> */}
-
-          <Route path= "/" exact element={<LandingPage />} />
-
-          <Route path="/login"element={<SignIn/>} />
+          <Route path= "/" exact element={<LandingPage/>} />
+          <Route path="/login" element={<SignInPage/>} />
+          <Route path="/signup" element={<SignUpPage/>} />
+          <Route path="/products" element={<ProductsPage/>} />
             {/* <h2>Login</h2>
             {!user ? (
               <div>
