@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app"
-import { FacebookAuthProvider, GoogleAuthProvider, getAuth } from "firebase/auth"
+import { FacebookAuthProvider, GithubAuthProvider, GoogleAuthProvider, TwitterAuthProvider, getAuth } from "firebase/auth"
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -22,6 +22,8 @@ export const app = initializeApp(firebaseConfig)
 export const auth = getAuth(app)
 export const googleProvider = new GoogleAuthProvider()
 export const facebookProvider = new FacebookAuthProvider()
+export const githubAuthProvider = new GithubAuthProvider()
+export const twitterxAuthProvider = new TwitterAuthProvider()
 // npm install -g firebase-tools
 //for deploy:
 // firebase login

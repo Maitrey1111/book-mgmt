@@ -1,6 +1,6 @@
 import { React, useState } from "react"
-import { onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth"
-import { auth, googleProvider, facebookProvider} from "../../Firebase/firebase"
+import { onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, FacebookAuthProvider, GithubAuthProvider, TwitterAuthProvider } from "firebase/auth"
+import { auth, googleProvider, facebookProvider, githubAuthProvider, twitterxAuthProvider} from "../../Firebase/firebase"
 
 import logoGoogle from "../../Assets/images/logo-google.png"
 import logoFacebook from "../../Assets/images/logo-facebook.png"
@@ -28,7 +28,7 @@ const SignInPage = () => {
       window.location.href = "/products"
     }    
   })
-
+  
   const signInWithGoogle = async () => {
     try {
       await signInWithPopup(auth, googleProvider)
@@ -36,25 +36,46 @@ const SignInPage = () => {
       console.error(err)
     }
   }
-
   const signInWithFacebook = async () => {
     try {
-      // const result = signInWithPopup(auth, facebookProvider)
+      const result = await signInWithPopup(auth, facebookProvider)
+      const user = result.user
+      console.log(user)
+      const credential = FacebookAuthProvider.credentialFromResult(result)
+      const accessToken = credential.accessToken
+      console.log(accessToken)
     } catch(err) {
-      alert(err)
+      const credential = FacebookAuthProvider.credentialFromResult(err)
+      console.error("login failed")
+    }
+  }
+  const signInWithGithub = async () => {
+    try {
+      const result = await signInWithPopup(auth, githubAuthProvider)
+      const user = result.user
+      console.log(user)
+      const credential = GithubAuthProvider.credentialFromResult(result)
+      const accessToken = credential.accessToken
+      console.log(accessToken)
+    } catch(err) {
+      const credential = GithubAuthProvider.credentialFromResult(err)
+      console.error("login failed")
+    }
+  }
+  const signInWithTwitterx = async () => {
+    try {
+      const result = await signInWithPopup(auth, twitterxAuthProvider)
+      const user = result.user
+      console.log(user)
+      const credential = TwitterAuthProvider.credentialFromResult(result)
+      const accessToken = credential.accessToken
+      console.log(accessToken)
+    } catch(err) {
+      const credential = TwitterAuthProvider.credentialFromResult(err)
+      console.error("login failed")
     }
   }
   
-  const handleSignInWithProvider = async (provider) => {
-    try {
-      // const authProvider = new auth[`FacebookAuthProvider`]()
-      // await firebase.auth().signInWithPopup(authProvider);
-      console.log(`${provider} sign-in successful`);
-    } catch (error) {
-      console.error(`${provider} sign-in error`, error);
-    }
-  };
-
   const Login = async () => {
     await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -132,14 +153,14 @@ const SignInPage = () => {
               <button
                 type="button"
                 className="btn border bg-body shadow mx-3 p-1"
-                // onClick={() => handleSignInWithProvider('GitHub')}
+                onClick={signInWithGithub}
               >
                 <img className="w-75" src={logoGithub} alt="logo-github" />
               </button>
               <button
                 type="button"
                 className="btn border bg-body shadow mx-3 p-1"
-                // onClick={() => handleSignInWithProvider('Twitter')}
+                onClick={signInWithTwitterx}
               >
                 <img className="w-75" src={logoTwitterx} alt="logo-twitterx" />
               </button>
