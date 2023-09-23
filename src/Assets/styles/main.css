@@ -1,0 +1,15 @@
+* {
+    /* font-family: 'Courier New', Courier, monospace !important;   */
+}
+
+.header{
+    font-size: 8vh !important;
+    font-weight: 500 !important;
+    /* font-family: 'Courier New', Courier, monospace !important; */
+    text-align: center !important;
+}
+
+.sub-header{
+    font-size: 25px;
+    font-family:Arial, Helvetica, sans-serif;
+}
