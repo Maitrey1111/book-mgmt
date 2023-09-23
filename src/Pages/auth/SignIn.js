@@ -45,7 +45,7 @@ const SignInPage = () => {
       const accessToken = credential.accessToken
       console.log(accessToken)
     } catch(err) {
-      console.error("login failed")
+      console.error(err)
     }
   }
   const signInWithGithub = async () => {
@@ -57,7 +57,7 @@ const SignInPage = () => {
       const accessToken = credential.accessToken
       console.log(accessToken)
     } catch(err) {
-      console.error("login failed")
+      console.error(err)
     }
   }
   const signInWithTwitterx = async () => {
@@ -69,7 +69,7 @@ const SignInPage = () => {
       const accessToken = credential.accessToken
       console.log(accessToken)
     } catch(err) {
-      console.error("login failed")
+      console.error(err)
     }
   }
   
