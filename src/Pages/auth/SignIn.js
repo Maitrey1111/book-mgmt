@@ -45,7 +45,6 @@ const SignInPage = () => {
       const accessToken = credential.accessToken
       console.log(accessToken)
     } catch(err) {
-      const credential = FacebookAuthProvider.credentialFromResult(err)
       console.error("login failed")
     }
   }
@@ -58,7 +57,6 @@ const SignInPage = () => {
       const accessToken = credential.accessToken
       console.log(accessToken)
     } catch(err) {
-      const credential = GithubAuthProvider.credentialFromResult(err)
       console.error("login failed")
     }
   }
@@ -71,7 +69,6 @@ const SignInPage = () => {
       const accessToken = credential.accessToken
       console.log(accessToken)
     } catch(err) {
-      const credential = TwitterAuthProvider.credentialFromResult(err)
       console.error("login failed")
     }
   }
