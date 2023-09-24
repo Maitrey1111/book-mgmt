@@ -45,7 +45,7 @@ const SignInPage = () => {
       const accessToken = credential.accessToken
       console.log(accessToken)
     } catch(err) {
-      console.error(err)
+      console.error(err.email, err.credential)
     }
   }
   const signInWithGithub = async () => {
