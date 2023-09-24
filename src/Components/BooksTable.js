@@ -1,22 +1,16 @@
-import { all } from 'axios'
 import { React, useState, useEffect } from 'react'
 
-const BooksTable = ({allBooksdata, modify, cart, setCart}) => {
+const BooksTable = ({books, modify, addToCart, removeFromCart, cartStatus}) => {
   const pageSize = 5
   const [page, setPage] = useState(0)
   const [visibleBooks, setVisibleBooks] = useState([])
-  const [loading, setLoading] = useState(false)
-  const [cartStatus, setCartStatus] = useState(Array(allBooksdata?.length).fill(false))
   
   useEffect(() => {
-    if (loading) return
-    setLoading(true)
     let limit = (page+1)*pageSize
-    if (limit >= allBooksdata?.length) {
-      limit = allBooksdata?.length
+    if (limit >= books?.length) {
+      limit = books?.length
     } 
-    setVisibleBooks(allBooksdata?.slice(0, limit))
-    setLoading(false)
+    setVisibleBooks(books?.slice(0, limit))
   }, [page])
 
   const handleLoadMore = () => {
@@ -24,30 +18,6 @@ const BooksTable = ({allBooksdata, modify, cart, setCart}) => {
   }
   const handleShowLess = () => {
     setPage(0)
-  }
-
-  const addToCart = (id, index) => {
-    let cartStatusTemp = cartStatus
-    cartStatusTemp[index] = true
-    setCartStatus(cartStatusTemp)
-    visibleBooks.forEach((book)=> {
-      if(book.id === id) {
-        setCart(cart.concat([book]))
-      }
-    })
-  }
-  
-  const removeFromCart = (id, index) => {
-    let cartStatusTemp = cartStatus
-    cartStatusTemp[index] = true
-    setCartStatus(cartStatusTemp)
-    let arr = cart
-    arr.filter((book, index, arr) => {
-      if(book.id === id){
-        arr.splice(index, 1)
-        setCart(arr)
-      }
-    })
   }
 
   return (
@@ -62,7 +32,7 @@ const BooksTable = ({allBooksdata, modify, cart, setCart}) => {
             <th>Genre</th>
             <th>Publish Date</th>
             <th>Price</th>
-            {!modify && <th>Cart Option</th>}
+            {modify && <th>Cart Option</th>}
           </tr>
         </thead>
         <tbody>
@@ -75,7 +45,7 @@ const BooksTable = ({allBooksdata, modify, cart, setCart}) => {
             <td>{book.categories?.join(', ')}</td>
             <td>{book.publishedDate.split('-').reverse().join('-')}</td>
             <td>{book.price}</td>
-            {!modify && 
+            {modify && 
               <td>
               {
               !cartStatus[index] 
@@ -89,10 +59,9 @@ const BooksTable = ({allBooksdata, modify, cart, setCart}) => {
         </tbody>
       </table>
       <div className='mb-5'>
-        {visibleBooks?.length < allBooksdata?.length && <button className='btn btn-secondary me-4' onClick={handleLoadMore}>Load More</button>}
-        {page > 0 && <button className='btn btn-secondary' onClick={handleShowLess}>Show Less</button>}
+        {books?.length >= 5 && visibleBooks?.length < books?.length && <button className='btn btn-secondary me-4' onClick={handleLoadMore}>Load More</button>}
+        {books?.length > 5 && page > 0 && <button className='btn btn-secondary' onClick={handleShowLess}>Show Less</button>}
       </div>
-      {loading && <p>Loading...</p>}
     </div>  
   )
 }

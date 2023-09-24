@@ -1,11 +1,10 @@
-import { React, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { onAuthStateChanged } from "firebase/auth"
 import { auth, db } from '../Firebase/firebase'
-import { collection, getDoc, onSnapshot } from 'firebase/firestore';
+import { collection, onSnapshot } from 'firebase/firestore';
 import Navbar from '../Components/Navbar'
 import SearchBar from '../Components/SearchBar'
 import BooksTable from '../Components/BooksTable'
-import DataFetch from './DataFetch'
 
 //materialUI
 import Box from '@mui/material/Box';
@@ -17,6 +16,7 @@ import Select from '@mui/material/Select';
 export const ProductsPage = () => {
   const [allBooksdata, setAllBooksData] = useState([])
   const [cart, setCart] = useState([])
+  const [cartStatus, setCartStatus] = useState(Array(allBooksdata?.length).fill(false))
 
   useEffect(() => {
     onSnapshot(collection(db, 'Books'), (snapshot) => {
@@ -32,7 +32,6 @@ export const ProductsPage = () => {
     console.log(cart)
   }, [cart])
   
-
   //checking sessions
   onAuthStateChanged(auth, (user) => {
     if (user == null) {
@@ -40,6 +39,34 @@ export const ProductsPage = () => {
       console.log("User session not active")
     } 
   })
+
+  const addToCart = (id) => {
+    let cartStatusTemp = cartStatus
+    allBooksdata.forEach((book, index)=> {
+      if(book.id === id && book.availability > 0) {
+        setCart(cart.concat([book]))
+        cartStatusTemp[index] = true
+        setCartStatus(cartStatusTemp)
+      }
+    })
+  }
+  
+  const removeFromCart = (id, index) => {
+    let cartStatusTemp = cartStatus
+    let arr = cart
+    arr.filter((book, index, arr) => {
+      if(book.id === id){
+        cartStatusTemp[index] = true
+        setCartStatus(cartStatusTemp)
+        arr.splice(index, 1)
+        setCart(arr)
+      }
+    })
+  }
+
+  const checkout = () => {
+    window.location.href = "/checkout"
+  }
 
 // Material UI
   const [attribute, setAttribute] = useState('')
@@ -78,16 +105,18 @@ export const ProductsPage = () => {
           </Box>     
         </div>
         <div>
-          {/* <DataFetch/> */}
           <h5>Choose Books</h5>
-          {allBooksdata.length ? <BooksTable allBooksdata={allBooksdata} modify={false} cart={cart} setCart={setCart}/> : null}
+          {allBooksdata.length ? <BooksTable books={allBooksdata} modify={true} addToCart={addToCart} removeFromCart={removeFromCart} cartStatus={cartStatus} /> : null}
         </div>
         <div>
-          {/* <DataFetch/> */}
-          <h5>Cart</h5>
-          {allBooksdata.length ? <BooksTable cart={true}/> : null}
+          {cart.length ?
+            <>
+              <h5>Cart</h5> 
+              <BooksTable books={cart} modify={false}/>
+              <button className='btn btn-primary' onClick={checkout}>Checkout</button>
+            </>
+            : null}
         </div>
-        <button className='btn btn-primary'>Checkout</button>
       </div>
     </div>
   )
